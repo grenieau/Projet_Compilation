@@ -6,7 +6,7 @@ class Ast:
 
     def accept(self, visitor, arg):
         nom = self.__class__.__name__
-        print("debug : ",visitor,arg)
+        #print("debug : ",visitor,arg)
         nomMethode = getattr(visitor, "visit" + nom)
         nomMethode(self, arg)
 

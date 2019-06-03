@@ -30,3 +30,5 @@ if __name__ == '__main__':
     print(parser.AST.equations)
     visiteur = Visitor()
     visiteur.doIt(ast)
+    print(visiteur.Liste_variable)
+    print("Nombre d'équations : ", visiteur.nb_eqs)
