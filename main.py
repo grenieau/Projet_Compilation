@@ -3,6 +3,7 @@ import argparse
 from lexer import Lexer
 from parser import Parser
 from visitor import Visitor
+from ast import *
 
 if __name__ == '__main__':
 
@@ -32,3 +33,4 @@ if __name__ == '__main__':
     visiteur.doIt(ast)
     print(visiteur.Liste_variable)
     print("Nombre d'équations : ", visiteur.nb_eqs)
+    visiteur.solveSystem(parser)

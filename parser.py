@@ -156,3 +156,42 @@ class Parser:
             actualPosition = actualToken.position
             print('Error at {}: expected IDENTIFIER or INTEGER_LIT after OP '.format(str(actualPosition)))
             sys.exit(1)
+
+    def check_linear(self):
+        for i in range(len(self.AST.equations)):
+            equation_i = self.AST.equations[i]
+            a = self.cherche(equation_i.left)
+            b = self.cherche(equation_i.right)
+            if a>=2 or b>=2:
+                return(False)
+        return(True)
+
+    def cherche(self,relation):
+        type_relation = type(Relation())
+        type_identifier = type(Identifier("e"))
+        if len(relation.list_operateur) == 0:
+            return(0)
+        for j in range(len(relation.list_operateur)):
+            if relation.list_operateur[j] == 'MUL' or relation.list_operateur[j] == 'DIV':
+                g = relation.list_expr[j]
+                d = relation.list_expr[j+1]
+                if type(g) != type_relation and type(d) != type_relation:
+                    if type(g) == type_identifier and type(d) == type_identifier:
+                        return(2)
+                elif type(g) != type_relation:
+                    if type(g) == type_identifier:
+                        return(1+self.cherche(d))
+                    else:
+                        return(self.cherche(d))
+                elif type(d) != type_relation:
+                    if type(d) == type_identifier:
+                        return(1+self.cherche(g))
+                    else:
+                        return(self.cherche(g))
+                else:
+                    return(self.cherche(g)+self.cherche(d))
+            else:
+                for x in relation.list_expr:
+                    if type(x) == type_identifier:
+                        return(1)
+                return(0)

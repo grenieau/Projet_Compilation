@@ -6,6 +6,7 @@ class Visitor:
         self.indentation = 0
         self.Liste_variable = []
         self.nb_eqs = 0
+
     # definition des indentations
     def indent(self):
         self.indentation += 2
@@ -22,7 +23,7 @@ class Visitor:
         print("visitSysteme")
         for eq in ast.equations:
             eq.accept(self,args)
-            self.nb_eqs += 1 #compatage du nombre d'équations
+            self.nb_eqs += 1 #comptage du nombre d'équations
 
     def visitEquation(self,equa,args):
         print('visitEquation')
@@ -33,7 +34,6 @@ class Visitor:
             if i < len(equa.left.list_operateur):
                 print(equa.left.list_operateur[i])
                 i += 1
-
 
         print('visitEquationRight')
         i = 0
@@ -59,6 +59,27 @@ class Visitor:
 
     def visitIdentifier(self, id, args):
         print("visitIdentifier")
-        if id not in self.Liste_variable:
+        c = True
+        for x in self.Liste_variable:
+            if id.ident == x.ident:
+                c = False
+                break
+        if c:
             self.Liste_variable.append(id)
             print(id)
+
+    def solveSystem(self,parser):
+        if self.nb_eqs < len(self.Liste_variable):
+            print("Systeme non solvable, pas assez d'equations")
+        elif self.nb_eqs == len(self.Liste_variable):
+            print("Systeme solvable, nombre d'equation egal au nombre de variable")
+            # Test pour savoir si le systeme est lineaire
+            if parser.check_linear():
+                print("Le systeme est lineaire")
+                
+        else:
+            print("Systeme solvable par la méthode des moindres carres")
+            # Test pour savoir si le systeme est lineaire
+            if parser.check_linear():
+                print("Le systeme est lineaire")
+            
